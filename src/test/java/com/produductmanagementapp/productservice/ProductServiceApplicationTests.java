@@ -1,6 +1,9 @@
 package com.produductmanagementapp.productservice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.produductmanagementapp.productservice.dto.ProductRequest;
+import com.produductmanagementapp.productservice.repository.ProductRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-
+//import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import org.springframework.http.MediaType;
 
@@ -36,6 +38,9 @@ class ProductServiceApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	private ProductRepository productRepository;
+
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
@@ -52,6 +57,7 @@ class ProductServiceApplicationTests {
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(productRequestString))
 				.andExpect(status().isCreated());
+        Assertions.assertEquals(1, productRepository.findAll().size());
 	}
 
 	private ProductRequest getProductRequest() {
