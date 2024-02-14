@@ -5,6 +5,7 @@ import com.produductmanagementapp.orderservice.dto.OrderRequest;
 import com.produductmanagementapp.orderservice.model.Order;
 import com.produductmanagementapp.orderservice.model.OrderLineItems;
 import com.produductmanagementapp.orderservice.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderService {
     private final OrderRepository orderRepository;
 
